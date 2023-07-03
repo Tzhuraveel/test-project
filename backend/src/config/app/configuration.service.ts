@@ -10,19 +10,11 @@ export class AppConfigService {
     private appConfiguration: ConfigType<typeof configuration>,
   ) {}
 
-  get port(): number {
-    return Number(this.appConfiguration.port);
-  }
-
   get secretKey(): string {
     return this.appConfiguration.secretTokenKey;
   }
 
-  get secretActionForgotKey(): string {
-    return this.appConfiguration.secretActionForgotTokenKey;
-  }
-
-  get secretActionActivateKey(): string {
-    return this.appConfiguration.secretActionActivateTokenKey;
+  get port(): number {
+    return Number(this.appConfiguration.port);
   }
 }

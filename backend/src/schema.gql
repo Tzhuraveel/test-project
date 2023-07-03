@@ -1,0 +1,128 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Task {
+  id: Int!
+  name: String!
+  description: String
+  dateStart: DateTime
+  dateEnd: DateTime
+  category: Category!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: Int!
+  name: String!
+  password: String!
+  role: String!
+  categories: [Category!]
+}
+
+type Category {
+  id: Int!
+  name: String!
+  dateCreated: DateTime!
+  user: User!
+  tasks: [Task!]
+}
+
+type TokenResponseDto {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type UserResponseDto {
+  id: Int!
+  name: String!
+  role: String!
+}
+
+type LoginResponseDto {
+  accessToken: String!
+  refreshToken: String!
+  user: UserResponseDto!
+}
+
+type TaskResponseDto {
+  id: Int!
+  name: String!
+  description: String
+  dateStart: DateTime
+  dateEnd: DateTime
+  category: CategoryResponseDtoWithoutTasks!
+}
+
+type CategoryResponseDto {
+  id: Float!
+  name: String!
+  dateCreated: DateTime!
+  user: UserResponseDto!
+  tasks: [TaskResponseDto!]!
+}
+
+type CategoryResponseDtoWithoutTasks {
+  id: Float!
+  name: String!
+  dateCreated: DateTime!
+  user: UserResponseDto!
+}
+
+type Query {
+  login(credentials: LoginDto!): LoginResponseDto!
+  refresh: TokenResponseDto!
+  deleteTask(taskId: Int!): Boolean!
+  getAllCategories: [CategoryResponseDto!]!
+}
+
+input LoginDto {
+  """Name of user"""
+  name: String!
+
+  """Password of user"""
+  password: String!
+}
+
+type Mutation {
+  register(credentials: RegisterDto!): Boolean!
+  createTask(categoryId: Int!, createTask: CreateTaskDto!): TaskResponseDto!
+  editTask(editTask: UpdateTaskDto!, taskId: Int!): TaskResponseDto!
+  createCategory(createCategory: CreateCategoryDto!): CategoryResponseDto!
+  editCategory(categoryId: Int!, editCategory: UpdateCategoryDto!): CategoryResponseDto!
+  deleteCategory(categoryId: Int!): Boolean!
+}
+
+input RegisterDto {
+  """Name of user"""
+  name: String!
+
+  """Password of user"""
+  password: String!
+}
+
+input CreateTaskDto {
+  name: String!
+  description: String
+  dateStart: String
+  dateEnd: String
+}
+
+input UpdateTaskDto {
+  name: String
+  description: String
+  dateStart: String
+  dateEnd: String
+}
+
+input CreateCategoryDto {
+  name: String!
+}
+
+input UpdateCategoryDto {
+  name: String
+}
