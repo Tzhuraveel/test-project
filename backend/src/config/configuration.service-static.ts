@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+import * as process from 'process';
 
 export class ConfigurationService {
   constructor(private env: { [k: string]: string | undefined }) {}
@@ -9,6 +10,9 @@ export class ConfigurationService {
 }
 
 const environment = process.env.NODE_ENV ? process.env.NODE_ENV : '';
-dotenv.config({ path: `environments/${environment}.env` });
+
+dotenv.config({
+  path: `environments/${environment}.env`,
+});
 const ConfigurationServiceStatic = new ConfigurationService(process.env);
 export { ConfigurationServiceStatic };

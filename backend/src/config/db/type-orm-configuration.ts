@@ -18,6 +18,7 @@ export class TypeOrmConfigurations {
   }
 
   static get config(): TypeOrmModuleAsyncOptions {
+    console.log('hello1');
     return {
       imports: [MySqlConfigModule],
       useFactory: (configService: MySqlConfigService) => ({
@@ -44,6 +45,7 @@ export class TypeOrmConfigurations {
   }
 
   static get staticConfig(): DataSourceOptions {
+    console.log('hello1');
     const folder = !process.env.NODE_ENV ? 'src' : 'dist/src';
     return {
       name: 'default',
@@ -53,11 +55,8 @@ export class TypeOrmConfigurations {
       username: MySqlConfigServiceStatic.user,
       password: MySqlConfigServiceStatic.password,
       database: MySqlConfigServiceStatic.database,
-      synchronize: false,
-      migrationsRun: MySqlConfigServiceStatic.runMigrations,
-      migrationsTableName: 'migrations',
+      synchronize: true,
       entities: [folder + '/**/*.entity{.ts,.js}'],
-      migrations: [folder + '/core/database/migrations/*{.js,.ts}'],
     };
   }
 }

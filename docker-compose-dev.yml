@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+    env_file:
+      - ./backend/environments/prod.env
+    ports:
+      - "5555:5001"
+    volumes:
+      - ./backend/dist:/app
+      - ./backend/ormconfig.js:/app/ormconfig.js
+      - /app/node_modules
+    restart: on-failure
+    command: >
+      sh -c "node --watch src/main.js"
+
+#db
+  postgres:
+    image: postgres
+    env_file:
+      - ./backend/environments/prod.env
+    environment:
+      PG_DATE: /var/lib/postgresql/data
+      POSTGRES_DB: true-global
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: root
+    volumes:
+      - ./postgres_db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: on-failure

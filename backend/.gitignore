@@ -1,8 +1,6 @@
 # compiled output
 /dist
-/environments
 /node_modules
-../.idea
 # Logs
 logs
 *.log

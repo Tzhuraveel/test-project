@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
-const configToken = 'mysql';
+const configToken = 'postgres';
 export default registerAs(configToken, () => ({
   host: process.env.DATABASE_HOST,
   port: process.env.DATABASE_PORT,
