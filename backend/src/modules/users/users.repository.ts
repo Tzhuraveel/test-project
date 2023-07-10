@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, ILike, Repository } from 'typeorm';
 
 import { User } from '../../core/database/entities';
 import { EUserFieldDb } from './model/enum';
@@ -14,7 +14,11 @@ export class UsersRepository extends Repository<User> {
     field: string | number,
     dbField: EUserFieldDb,
   ) {
-    return this.findOne({ where: { [dbField]: field } });
+    return this.findOne({
+      where: {
+        [dbField]: dbField === EUserFieldDb.NAME ? ILike(field) : field,
+      },
+    });
   }
 
   public async getAll(): Promise<User[]> {

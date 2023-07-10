@@ -10,7 +10,7 @@ export class Task {
   @Field(() => Int, {})
   id: number;
 
-  @Column({ type: 'varchar', length: 35 })
+  @Column({ type: 'varchar', length: 15 })
   @Field()
   name: string;
 

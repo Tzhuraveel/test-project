@@ -5,5 +5,4 @@ export interface ITokenPayload {
 
 export interface ITokenPair {
   accessToken: string;
-  refreshToken: string;
 }

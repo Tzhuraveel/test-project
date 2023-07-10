@@ -55,8 +55,11 @@ export class TypeOrmConfigurations {
       username: MySqlConfigServiceStatic.user,
       password: MySqlConfigServiceStatic.password,
       database: MySqlConfigServiceStatic.database,
-      synchronize: true,
+      synchronize: false,
+      migrationsRun: MySqlConfigServiceStatic.runMigrations,
+      migrationsTableName: 'migrations',
       entities: [folder + '/**/*.entity{.ts,.js}'],
+      migrations: [folder + '/core/database/migrations/*{.js,.ts}'],
     };
   }
 }

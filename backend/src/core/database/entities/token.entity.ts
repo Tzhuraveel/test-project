@@ -17,10 +17,6 @@ export class Token {
   @Field()
   accessToken: string;
 
-  @Column({ type: 'varchar' })
-  @Field()
-  refreshToken: string;
-
   @Column({ type: 'int' })
   @Field(() => Int)
   userId: number;

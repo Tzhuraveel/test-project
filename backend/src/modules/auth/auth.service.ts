@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { User } from '../../core/database/entities';
 import { EFoundAction } from '../../core/enum';
@@ -27,15 +27,11 @@ export class AuthService {
       token,
     );
 
-    const user = await this.usersService.checkIsUserExist(
+    return await this.usersService.checkIsUserExist(
       EFoundAction.NEXT,
       payload.userId,
       EUserFieldDb.ID,
     );
-
-    if (!user) throw new UnauthorizedException();
-
-    return user;
   }
 
   public async register(credentials: RegisterDto): Promise<void> {
@@ -67,27 +63,11 @@ export class AuthService {
       userFromDb.password,
     );
 
-    const tokenPair: ITokenPair = await this.tokenService.createTokenPair({
+    const tokenPair: ITokenPair = await this.tokenService.createAccessToken({
       name: userFromDb.name,
       userId: userFromDb.id,
     });
 
     return { ...tokenPair, user: userFromDb };
-  }
-
-  public async refresh(refreshToken: string): Promise<ITokenPair> {
-    const user = await this.validationToken(refreshToken);
-
-    await this.tokenService.findByRefreshToken(refreshToken);
-
-    const [tokenPair] = await Promise.all([
-      await this.tokenService.createTokenPair({
-        name: user.name,
-        userId: user.id,
-      }),
-      await this.tokenRepository.delete({ refreshToken }),
-    ]);
-
-    return tokenPair;
   }
 }

@@ -15,7 +15,7 @@ export class CreateTaskDto {
   @IsAlpha()
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
-  @Length(5, 20)
+  @Length(5, 15)
   name: string;
 
   @Field({ nullable: true })

@@ -35,27 +35,16 @@ export class TokensService {
     return tokenFromDb;
   }
 
-  public async findByRefreshToken(refreshToken: string) {
-    const tokenFromDb = await this.tokenRepository.findOneBy({ refreshToken });
-
-    if (!tokenFromDb)
-      throw new HttpException('Token not found', HttpStatus.BAD_REQUEST);
-
-    return tokenFromDb;
-  }
-
-  public async createTokenPair(payload: ITokenPayload): Promise<ITokenPair> {
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(payload),
-      this.jwtService.signAsync(payload, { expiresIn: '20m' }),
-    ]);
+  public async createAccessToken(payload: ITokenPayload): Promise<ITokenPair> {
+    const accessToken = await this.jwtService.signAsync(payload, {
+      expiresIn: '20m',
+    });
 
     await this.tokenRepository.save({
       accessToken,
-      refreshToken,
       userId: payload.userId,
     });
 
-    return { accessToken, refreshToken };
+    return { accessToken };
   }
 }

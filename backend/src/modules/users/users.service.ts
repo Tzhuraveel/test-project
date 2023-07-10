@@ -1,4 +1,8 @@
-import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { User } from '../../core/database/entities';
 import { EFoundAction } from '../../core/enum';
@@ -24,7 +28,7 @@ export class UsersService {
         if (!foundItem) throw new NotFoundException('User not found');
         return foundItem;
       case EFoundAction.THROW:
-        if (foundItem) throw new HttpException('User already exist', 400);
+        if (foundItem) throw new BadRequestException('User already exist');
         break;
     }
   }

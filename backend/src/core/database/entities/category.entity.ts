@@ -18,7 +18,7 @@ export class Category {
   @Field(() => Int)
   id: number;
 
-  @Column({ type: 'varchar', length: 45 })
+  @Column({ type: 'varchar', length: 15 })
   @Field()
   name: string;
 

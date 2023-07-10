@@ -22,23 +22,44 @@ export class CategoriesService {
     return category;
   }
 
-  public async getAll(user: User): Promise<Category[]> {
-    return await this.categoryRepository.find({
-      where: { user },
-      relations: ['tasks', 'user'],
-    });
+  public async getAll({ id }: User): Promise<Category[]> {
+    const newVar = await this.categoryRepository
+      .createQueryBuilder('category')
+      .select('category.id', 'id')
+      .addSelect('category.name', 'name')
+      .addSelect('category.dateCreated', 'dateCreated')
+      .where('category.user = :id', { id })
+      .leftJoin('category.tasks', 'tasks')
+      .addSelect('COUNT(tasks)', 'taskCount')
+      .groupBy('category.id')
+      .getRawMany();
+
+    return newVar;
   }
 
   public async addCategory(
     user: User,
     category: CreateCategoryDto,
   ): Promise<Category> {
-    const createdCategory = await this.categoryRepository.create({
+    const createdCategory = await this.categoryRepository.save({
       name: category.name,
       user,
     });
 
-    return await this.categoryRepository.save(createdCategory);
+    const result = await this.categoryRepository
+      .createQueryBuilder('category')
+      .leftJoin('category.tasks', 'tasks')
+      .where('category.id = :id', { id: createdCategory.id })
+      .select('category.id', 'id')
+      .addSelect('category.name', 'name')
+      .addSelect('category.dateCreated', 'dateCreated')
+      .addSelect('COUNT(tasks)', 'taskCount')
+      .groupBy('category.id')
+      .getOne();
+
+    console.log(result);
+
+    return result;
   }
 
   public async editCategory(

@@ -15,10 +15,13 @@ export class CategoryResponseDto {
   @Field()
   dateCreated: Date;
 
-  @Field(() => UserResponseDto)
-  @Type(() => UserResponseDto)
-  user: UserResponseDto;
+  @Field()
+  taskCount: number;
 
+  // @Field(() => UserResponseDto)
+  // @Type(() => UserResponseDto)
+  // user: UserResponseDto;
+  //
   @Field(() => [TaskResponseDto])
   @Type(() => TaskResponseDto)
   tasks: TaskResponseDto[];
