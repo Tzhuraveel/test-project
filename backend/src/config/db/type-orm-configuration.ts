@@ -26,6 +26,7 @@ export class TypeOrmConfigurations {
         port: configService.port,
         username: configService.user,
         password: configService.password,
+
         database: configService.database,
         synchronize: true,
         // migrationsRun: configService.runMigrations,

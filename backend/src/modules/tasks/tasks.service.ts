@@ -14,7 +14,7 @@ export class TasksService {
 
   public async getAll(user: User, categoryId: number): Promise<Task[]> {
     return await this.tasksRepository.find({
-      where: { category: { id: categoryId, user } },
+      where: { category: { id: categoryId } },
       relations: { category: true },
       order: {
         id: 'ASC',

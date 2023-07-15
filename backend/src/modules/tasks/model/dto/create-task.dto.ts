@@ -6,8 +6,8 @@ import { DateTime } from 'luxon';
 @InputType()
 export class CreateTaskDto {
   @Field()
-  @Matches(/^[A-Za-z\s]+$/, {
-    message: 'Field can only contain letters and spaces',
+  @Matches(/^([А-ЩЬЮЯҐЄІЇа-щьюяґєії]|[a-zA-Z\s])*$/, {
+    message: 'Ukrainian and English letters only',
   })
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
