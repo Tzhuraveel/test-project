@@ -2,27 +2,22 @@ import { Field, ObjectType, OmitType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
 import { TaskResponseDto } from '../../../tasks/model/dto';
-import { UserResponseDto } from '../../../users/model/dto';
 
 @ObjectType()
 export class CategoryResponseDto {
-  @Field()
+  @Field({ nullable: true })
   id: number;
 
-  @Field()
+  @Field({ nullable: true })
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   dateCreated: Date;
 
-  @Field()
+  @Field({ nullable: true })
   taskCount: number;
 
-  // @Field(() => UserResponseDto)
-  // @Type(() => UserResponseDto)
-  // user: UserResponseDto;
-  //
-  @Field(() => [TaskResponseDto])
+  @Field(() => [TaskResponseDto], { nullable: true })
   @Type(() => TaskResponseDto)
   tasks: TaskResponseDto[];
 }

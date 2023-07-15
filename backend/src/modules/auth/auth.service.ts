@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { User } from '../../core/database/entities';
 import { EFoundAction } from '../../core/enum';
-import { ITokenPair, ITokenPayload } from '../tokens/model/interface';
+import { ITokenPair } from '../tokens/model/interface';
 import { TokensRepository } from '../tokens/tokens.repository';
 import { TokensService } from '../tokens/tokens.service';
 import { EUserFieldDb } from '../users/model/enum';
@@ -21,18 +20,6 @@ export class AuthService {
     private readonly tokenRepository: TokensRepository,
     private readonly passwordService: PasswordService,
   ) {}
-
-  public async validationToken(token: string): Promise<User> {
-    const payload: ITokenPayload = await this.tokenService.verifyAuthToken(
-      token,
-    );
-
-    return await this.usersService.checkIsUserExist(
-      EFoundAction.NEXT,
-      payload.userId,
-      EUserFieldDb.ID,
-    );
-  }
 
   public async register(credentials: RegisterDto): Promise<void> {
     await this.usersService.checkIsUserExist(

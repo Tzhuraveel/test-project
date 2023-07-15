@@ -1,12 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Category, User } from '../../core/database/entities';
+import { CategoriesMapper } from './categories.mapper';
 import { CategoriesRepository } from './categories.repository';
 import { CreateCategoryDto, UpdateCategoryDto } from './model/dto';
 
 @Injectable()
 export class CategoriesService {
-  constructor(private readonly categoryRepository: CategoriesRepository) {}
+  constructor(
+    private readonly categoryRepository: CategoriesRepository,
+    private readonly categoriesMapper: CategoriesMapper,
+  ) {}
 
   public async findByIdAndUserId(
     id: number,
@@ -22,44 +26,37 @@ export class CategoriesService {
     return category;
   }
 
-  public async getAll({ id }: User): Promise<Category[]> {
-    const newVar = await this.categoryRepository
-      .createQueryBuilder('category')
-      .select('category.id', 'id')
-      .addSelect('category.name', 'name')
-      .addSelect('category.dateCreated', 'dateCreated')
-      .where('category.user = :id', { id })
-      .leftJoin('category.tasks', 'tasks')
-      .addSelect('COUNT(tasks)', 'taskCount')
-      .groupBy('category.id')
-      .getRawMany();
+  public async getAll(user: User): Promise<Category[]> {
+    const category = await this.categoryRepository.find({
+      where: { user },
+      relations: { tasks: true },
+      order: {
+        id: 'ASC',
+      },
+    });
 
-    return newVar;
+    return this.categoriesMapper.toManyResponse(category);
   }
 
   public async addCategory(
     user: User,
     category: CreateCategoryDto,
   ): Promise<Category> {
-    const createdCategory = await this.categoryRepository.save({
+    const createdCategoryModel = this.categoryRepository.create({
       name: category.name,
       user,
     });
 
-    const result = await this.categoryRepository
-      .createQueryBuilder('category')
-      .leftJoin('category.tasks', 'tasks')
-      .where('category.id = :id', { id: createdCategory.id })
-      .select('category.id', 'id')
-      .addSelect('category.name', 'name')
-      .addSelect('category.dateCreated', 'dateCreated')
-      .addSelect('COUNT(tasks)', 'taskCount')
-      .groupBy('category.id')
-      .getOne();
+    const createdCategory = await this.categoryRepository.save(
+      createdCategoryModel,
+    );
 
-    console.log(result);
+    const categoryFromDb = await this.categoryRepository.findOne({
+      where: { id: createdCategory.id },
+      relations: { tasks: true },
+    });
 
-    return result;
+    return this.categoriesMapper.toResponse(categoryFromDb);
   }
 
   public async editCategory(

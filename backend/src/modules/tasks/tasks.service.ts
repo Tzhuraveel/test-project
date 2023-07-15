@@ -12,6 +12,16 @@ export class TasksService {
     private readonly categoriesService: CategoriesService,
   ) {}
 
+  public async getAll(user: User, categoryId: number): Promise<Task[]> {
+    return await this.tasksRepository.find({
+      where: { category: { id: categoryId, user } },
+      relations: { category: true },
+      order: {
+        id: 'ASC',
+      },
+    });
+  }
+
   public async findByIdAndUserId(id: number, userId: number): Promise<Task> {
     const task: Task = await this.tasksRepository.findByIdAndUserId(id, userId);
 

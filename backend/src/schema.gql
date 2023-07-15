@@ -53,22 +53,22 @@ type TaskResponseDto {
 }
 
 type CategoryResponseDto {
-  id: Float!
-  name: String!
-  dateCreated: DateTime!
-  taskCount: Float!
-  tasks: [TaskResponseDto!]!
+  id: Float
+  name: String
+  dateCreated: DateTime
+  taskCount: Float
+  tasks: [TaskResponseDto!]
 }
 
 type CategoryResponseDtoWithoutTasks {
-  id: Float!
-  name: String!
-  dateCreated: DateTime!
-  taskCount: Float!
+  id: Float
+  name: String
+  dateCreated: DateTime
+  taskCount: Float
 }
 
 type Query {
-  deleteTask(taskId: Int!): Boolean!
+  getAllTasks(categoryId: Int!): [TaskResponseDto!]!
   getAllCategories: [CategoryResponseDto!]!
 }
 
@@ -77,6 +77,7 @@ type Mutation {
   login(credentials: LoginDto!): LoginResponseDto!
   createTask(categoryId: Int!, createTask: CreateTaskDto!): TaskResponseDto!
   editTask(editTask: UpdateTaskDto!, taskId: Int!): TaskResponseDto!
+  deleteTask(taskId: Int!): Boolean!
   createCategory(createCategory: CreateCategoryDto!): CategoryResponseDto!
   editCategory(categoryId: Int!, editCategory: UpdateCategoryDto!): CategoryResponseDto!
   deleteCategory(categoryId: Int!): Boolean!

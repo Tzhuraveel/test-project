@@ -18,7 +18,6 @@ export class TypeOrmConfigurations {
   }
 
   static get config(): TypeOrmModuleAsyncOptions {
-    console.log('hello1');
     return {
       imports: [MySqlConfigModule],
       useFactory: (configService: MySqlConfigService) => ({
@@ -28,24 +27,23 @@ export class TypeOrmConfigurations {
         username: configService.user,
         password: configService.password,
         database: configService.database,
-        synchronize: false,
-        migrationsRun: configService.runMigrations,
+        synchronize: true,
+        // migrationsRun: configService.runMigrations,
         entities: [__dirname + './../../**/*.entity{.ts,.js}'],
-        migrationsTableName: 'migrations',
-        migrations: [
-          `${this.workingDirectory}src/core/database/migrations/*.ts`,
-        ],
-        cli: {
-          migrationsDir: 'src/core/database/migrations',
-        },
-        // logging: true,
+        // migrationsTableName: 'migrations',
+        // migrations: [
+        //   `${this.workingDirectory}src/core/database/migrations/*.ts`,
+        // ],
+        // cli: {
+        //   migrationsDir: 'src/core/database/migrations',
+        // },
+        logging: true,
       }),
       inject: [MySqlConfigService],
     };
   }
 
   static get staticConfig(): DataSourceOptions {
-    console.log('hello1');
     const folder = !process.env.NODE_ENV ? 'src' : 'dist/src';
     return {
       name: 'default',

@@ -22,6 +22,15 @@ export class TasksResolver {
   }
 
   @UseGuards(BearerGuard)
+  @Query(() => [TaskResponseDto])
+  async getAllTasks(
+    @UserData() user: User,
+    @Args({ name: 'categoryId', type: () => Int }) categoryId: number,
+  ): Promise<Task[]> {
+    return await this.tasksService.getAll(user, categoryId);
+  }
+
+  @UseGuards(BearerGuard)
   @Mutation(() => TaskResponseDto)
   async editTask(
     @UserData() user: User,
@@ -32,7 +41,7 @@ export class TasksResolver {
   }
 
   @UseGuards(BearerGuard)
-  @Query(() => Boolean)
+  @Mutation(() => Boolean)
   async deleteTask(
     @UserData() user: User,
     @Args({ name: 'taskId', type: () => Int }) taskId: number,

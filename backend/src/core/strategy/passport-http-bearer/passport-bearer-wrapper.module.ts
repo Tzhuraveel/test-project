@@ -3,6 +3,7 @@ import { PassportModule } from '@nestjs/passport';
 
 import { AuthModule } from '../../../modules/auth';
 import { TokenModule } from '../../../modules/tokens';
+import { UsersModule } from '../../../modules/users';
 import { BearerStrategy } from './bearer.strategy';
 
 @Global()
@@ -10,6 +11,7 @@ import { BearerStrategy } from './bearer.strategy';
   imports: [
     AuthModule,
     TokenModule,
+    UsersModule,
     PassportModule.register({ defaultStrategy: 'bearer' }),
   ],
   providers: [BearerStrategy],

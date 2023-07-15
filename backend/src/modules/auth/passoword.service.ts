@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -13,10 +13,7 @@ export class PasswordService {
     const isMatched = await bcrypt.compare(password, hashedPassword);
 
     if (!isMatched) {
-      throw new HttpException(
-        'Wrong email or password',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('Wrong name or password');
     }
   }
 }
