@@ -1,11 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import { IsAlpha, IsNotEmpty, Length, Matches } from 'class-validator';
+import { IsNotEmpty, Length, Matches } from 'class-validator';
 
 @InputType()
 export class CreateCategoryDto {
   @Field()
-  @IsAlpha()
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
   @Matches(/^([А-ЩЬЮЯҐЄІЇа-щьюяґєії]|[a-zA-Z\s])*$/, {
