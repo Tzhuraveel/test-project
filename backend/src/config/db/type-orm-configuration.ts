@@ -38,7 +38,6 @@ export class TypeOrmConfigurations {
         // cli: {
         //   migrationsDir: 'src/core/database/migrations',
         // },
-        logging: true,
       }),
       inject: [MySqlConfigService],
     };
